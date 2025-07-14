@@ -123,12 +123,31 @@ public class Startup
     Console.WriteLine($"[System] Contains(\"apple\"): {sysStr.Contains("apple")}");
     Console.WriteLine($"[Custom] Contains(\"apple\"): {myStr.Contains("apple")}");
 
-    sysStr.Clear();
-    myStr.Clear();
+    // sysStr.Clear();
+    // myStr.Clear();
 
     Console.WriteLine($"[System] Count after Clear: {sysStr.Count}");
     Console.WriteLine($"[Custom] Count after Clear: {myStr.Count}");
-
+    
+    // ================================
+    Console.WriteLine("Test Case 1: Normal copy starting at index 0");
+    int[] dest1 = new int[5];
+    sysStack.CopyTo(dest1, 0);
+    Console.WriteLine(string.Join(", ", dest1));  
+    // Expected: "30, 20, 10, 0, 0"
+        
+    Console.WriteLine("\nTest Case 2: Normal copy starting at non-zero index");
+    int[] dest2 = new int[6];
+    myStack.CopyTo(dest2, 2);
+    Console.WriteLine(string.Join(", ", dest2));  
+    // Expected: "0, 0, 30, 20, 10, 0"
+        
+    Console.WriteLine("\nTest Case 3: Copy with array exactly sized for stack");
+    int[] dest3 = new int[3];
+    myStack.CopyTo(dest3, 0);
+    Console.WriteLine(string.Join(", ", dest3));  
+    // Expected: "30, 20, 10"
+       
     // ================================
     Console.WriteLine("\n======= SUMMARY VERDICT =======");
     Console.WriteLine("✅ All method behaviors visually match the built-in Stack<T>");
@@ -242,16 +261,24 @@ public class MyStack<T>
     }
 
     // Copies the stack into an array.
-    public void CopyTo(T[] array, int arrayIndex)
+    public void CopyTo(T[] array, int arrayIndex) // arrayIndex specifies the starting position (index) in the destination array (array) where the copying of the stack elements should begin.
     {
-        // ArgumentNullException.ThrowIfNull(array);
-        //
-        // if (arrayIndex < 0 || arrayIndex > array.Length)
-        // {
-        //     throw new InvalidOperationException();
-        // }
-        //
+        ArgumentNullException.ThrowIfNull(array);
+        
+        if (arrayIndex < 0 || arrayIndex > array.Length)
+        {
+            throw new InvalidOperationException();
+        }
+        
+        int srcIndex = 0; // start
+        int dstIndex = arrayIndex + _size; // end
 
+        while (srcIndex < _size) // if start less than actual size
+        {
+            array[--dstIndex] = _data[srcIndex++];// Store as reverse order
+            // arr[end] = stackArr[start]
+            // --end ; start++
+        }
     }
 
     /*************** Utils *********************/
