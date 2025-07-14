@@ -1,0 +1,15 @@
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\bin\Debug\net8.0\Data_Structures.exe
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\bin\Debug\net8.0\Data_Structures.deps.json
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\bin\Debug\net8.0\Data_Structures.runtimeconfig.json
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\bin\Debug\net8.0\Data_Structures.dll
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\bin\Debug\net8.0\Data_Structures.pdb
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.AssemblyInfoInputs.cache
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.AssemblyInfo.cs
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.csproj.CoreCompileInputs.cache
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.sourcelink.json
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.dll
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\refint\Data_Structures.dll
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.pdb
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\Data_Structures.genruntimeconfig.cache
+C:\Users\User\RiderProjects\Data_Structures\Data_Structures\obj\Debug\net8.0\ref\Data_Structures.dll
