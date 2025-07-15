@@ -1,5 +1,7 @@
 ﻿// LIFO -> Last in First out
 
+using System.Collections;
+
 public class Startup
 {
    static void Main(string[] args)
@@ -18,7 +20,16 @@ public class Startup
     sysStack.Push(32);
 
     Console.WriteLine("[System] Count after Push: " + sysStack.Count);
+    Console.WriteLine("--------------------- [System] Copy to ---------------------");
+    int[] arr = new int[7];
+    sysStack.CopyTo(arr, 1);
+    foreach (var s in arr.ToArray())
+    {
+        Console.WriteLine(s);
+    }
+    Console.WriteLine("--------------------- ---------------- ---------------------");
 
+    
     Console.WriteLine("\n[System] ToArray (LIFO):");
     int[] sysArray = sysStack.ToArray();
     foreach (var i in sysArray)
@@ -50,8 +61,24 @@ public class Startup
     myStack.Push(30);
     myStack.Push(32);
 
+    foreach (var s in myStack)
+    {
+        Console.WriteLine(s);
+    }
+
     Console.WriteLine("[Custom] Count after Push: " + myStack.Count);
 
+    Console.WriteLine("[System] Count after Push: " + sysStack.Count);
+    Console.WriteLine("--------------------- [Custom] Copy to ---------------------");
+    int[] arr2 = new int[7];
+    myStack.CopyTo(arr2, 1);
+    foreach (var s in arr2.ToArray())
+    {
+        Console.WriteLine(s);
+    }
+    Console.WriteLine("--------------------- ---------------- ---------------------");
+
+    
     Console.WriteLine("\n[Custom] ToArray (LIFO):");
     var myArray = myStack.ToArray();
     foreach (var i in myArray)
@@ -64,6 +91,7 @@ public class Startup
     myStack.Clear();
     Console.WriteLine($"\n[Custom] Count after Clear: {myStack.Count}");
 
+    
     try { myStack.Peek(); }
     catch (Exception ex) { Console.WriteLine($"[Custom] Peek throws: {ex.Message}"); }
 
@@ -123,40 +151,17 @@ public class Startup
     Console.WriteLine($"[System] Contains(\"apple\"): {sysStr.Contains("apple")}");
     Console.WriteLine($"[Custom] Contains(\"apple\"): {myStr.Contains("apple")}");
 
-    // sysStr.Clear();
-    // myStr.Clear();
+    sysStr.Clear();
+    myStr.Clear();
 
     Console.WriteLine($"[System] Count after Clear: {sysStr.Count}");
     Console.WriteLine($"[Custom] Count after Clear: {myStr.Count}");
     
-    // ================================
-    Console.WriteLine("Test Case 1: Normal copy starting at index 0");
-    int[] dest1 = new int[5];
-    sysStack.CopyTo(dest1, 0);
-    Console.WriteLine(string.Join(", ", dest1));  
-    // Expected: "30, 20, 10, 0, 0"
-        
-    Console.WriteLine("\nTest Case 2: Normal copy starting at non-zero index");
-    int[] dest2 = new int[6];
-    myStack.CopyTo(dest2, 2);
-    Console.WriteLine(string.Join(", ", dest2));  
-    // Expected: "0, 0, 30, 20, 10, 0"
-        
-    Console.WriteLine("\nTest Case 3: Copy with array exactly sized for stack");
-    int[] dest3 = new int[3];
-    myStack.CopyTo(dest3, 0);
-    Console.WriteLine(string.Join(", ", dest3));  
-    // Expected: "30, 20, 10"
-       
-    // ================================
-    Console.WriteLine("\n======= SUMMARY VERDICT =======");
-    Console.WriteLine("✅ All method behaviors visually match the built-in Stack<T>");
-    Console.WriteLine("🔍 You can copy/paste side-by-side logs to verify stack parity");
 }
 
 }
 
-public class MyStack<T>
+public class MyStack<T> : IEnumerable<T>
 {
     private T[] _data;
     private const int DEFAULT_SIZE = 4;
@@ -236,9 +241,10 @@ public class MyStack<T>
         for (int i = start + length - 1; i >= start ; i--)
         {
             data[i] = default!;
-            _size--;
-            _index--;
         }
+
+        _size = 0;
+        _index = -1;
     }
 
     // To reduce the capacity of the internal array (_array) to free unused memory when your stack has extra space that's no longer needed.
@@ -255,27 +261,31 @@ public class MyStack<T>
     {
         for (int i = _size - 1; i >= 0; i--)
         {
-            if (_data[i]!.Equals(item)) return true;
+            if (_data[i].Equals(item)) return true;
         }
         return false;
     }
 
     // Copies the stack into an array.
-    public void CopyTo(T[] array, int arrayIndex) // arrayIndex specifies the starting position (index) in the destination array (array) where the copying of the stack elements should begin.
+    public void CopyTo(T[] newArray, int arrayIndex) // arrayIndex specifies the starting position (index) in the destination array (array) where the copying of the stack elements should begin.
     {
-        ArgumentNullException.ThrowIfNull(array);
+        ArgumentNullException.ThrowIfNull(newArray);
         
-        if (arrayIndex < 0 || arrayIndex > array.Length)
+        if (arrayIndex < 0 || arrayIndex > newArray.Length)
         {
             throw new InvalidOperationException();
         }
+        if (newArray.Length - arrayIndex < _size)
+        {
+            throw new InvalidOperationException("Stack size is greater than array length from offset(arrayIndex).");
+        }
         
-        int srcIndex = 0; // start
+        int startIndex = 0; // start
         int dstIndex = arrayIndex + _size; // end
 
-        while (srcIndex < _size) // if start less than actual size
+        while (startIndex < _size) // if start less than actual size
         {
-            array[--dstIndex] = _data[srcIndex++];// Store as reverse order
+            newArray[--dstIndex] = _data[startIndex++];// Store as reverse order
             // arr[end] = stackArr[start]
             // --end ; start++
         }
@@ -315,4 +325,16 @@ public class MyStack<T>
 
     private bool IsEmpty() => _index == -1; // By default we have arr with length = 10, therefore we can know emptyness of stack with only index pointer
 
+    public IEnumerator<T> GetEnumerator()
+    {
+        for (int i = _size - 1; i >= 0; i--)
+        {
+            yield return _data[i];
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }
