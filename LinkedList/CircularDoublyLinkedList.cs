@@ -146,7 +146,24 @@ public class CircularDoublyLinkedList<T> : IEnumerable<CircularDoublyLinkedList<
         } while (copyHead != Head); // loop ends when you circle back
         return null;
     }
-    
+
+    public Node<T>? FindLast(T value)
+    {
+        var tail = Head.Prev;
+        if (tail == null) return null;
+        
+        do
+        {
+            if (tail != null && tail.Value != null && tail.Value.Equals(value))
+            {
+                return tail;
+            }
+            tail = tail.Prev!;
+            
+        } while (tail != Head.Prev); // loop ends when you circle back
+        return null;
+    }
+
     public void Display()
     {
         if (Head == null)
@@ -157,7 +174,7 @@ public class CircularDoublyLinkedList<T> : IEnumerable<CircularDoublyLinkedList<
 
         var copyHead = Head;
         
-        Console.WriteLine("Print with normal order");
+        Console.WriteLine("\nPrint with normal order");
         do
         {
            Console.Write(copyHead.Value + " -> ");
@@ -178,6 +195,34 @@ public class CircularDoublyLinkedList<T> : IEnumerable<CircularDoublyLinkedList<
         Console.WriteLine("START");
     }
 
+    public void CopyTo(T[] array, int index)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+
+        if (index < 0 || index > array.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index));
+        }
+        
+        //  Valid ( L=5; i=3; ) >= ( size=2 )
+        if (array.Length - index < _size)
+        {
+            throw new InvalidOperationException("Array is too small to copy linked list's elements");
+        }
+
+        if (Head == null || _size == 0) // If list is empty
+            return;
+        
+        var copyHead = Head;
+        
+        int counter = index;
+        do
+        {
+            array[counter++] = copyHead.Value;
+            copyHead = copyHead.Next!;
+            
+        } while (copyHead != Head);
+    }
 
     public Node<T> AddAfter(Node<T> node, T value)
     {

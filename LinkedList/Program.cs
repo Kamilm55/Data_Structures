@@ -101,17 +101,124 @@ public class Startup
         
         // ----------------- Circular Doubly Linked List -----------------
         Console.WriteLine("----------------- Circular Doubly Linked List -----------------");
-        CircularDoublyLinkedList<int> circularDoubly = new CircularDoublyLinkedList<int>();
-        circularDoubly.AddFirst(1);
-        circularDoubly.AddAfter(circularDoubly.Find(1)!,2);
-        circularDoubly.AddLast(23);
-        circularDoubly.AddBefore(circularDoubly.Find(23)!,232);
-        
-        circularDoubly.Display();
-        
-        circularDoubly.Clear();
-        Console.WriteLine("\nDisplay after clear:");
-        circularDoubly.Display();
+
+        var cDLinkedList = new CircularDoublyLinkedList<int>();
+
+        // 1. Test AddFirst()
+        cDLinkedList.AddFirst(1);
+        // Expected: 1
+        cDLinkedList.Display(); // Output: 1 -> END / 1 -> START
+
+        // 2. AddAfter()
+        cDLinkedList.AddAfter(cDLinkedList.Find(1)!, 2);
+        // Expected: 1 -> 2
+        cDLinkedList.Display(); // Output: 1 -> 2 -> END / 2 -> 1 -> START
+
+        // 3. AddLast()
+        cDLinkedList.AddLast(3);
+        // Expected: 1 -> 2 -> 3
+        cDLinkedList.Display(); // Output: 1 -> 2 -> 3 -> END / 3 -> 2 -> 1 -> START
+
+        // 4. AddBefore()
+        cDLinkedList.AddBefore(cDLinkedList.Find(3)!, 99);
+        // Expected: 1 -> 2 -> 99 -> 3
+        cDLinkedList.Display(); // Output: 1 -> 2 -> 99 -> 3 -> END / 3 -> 99 -> 2 -> 1 -> START
+
+        // 5. Test Contains()
+        Console.WriteLine("Contains 99? " + cDLinkedList.Contains(99)); // true
+        Console.WriteLine("Contains 100? " + cDLinkedList.Contains(100)); // false
+
+        // 6. Find & FindLast
+        Console.WriteLine("Find(99): " + cDLinkedList.Find(99)?.Value); // 99
+        Console.WriteLine("FindLast(2): " + cDLinkedList.FindLast(2)?.Value); // 2
+
+        // 7. Insert at position
+        cDLinkedList.Insert(55, 2);
+        // Expected: 1 -> 2 -> 55 -> 99 -> 3
+        cDLinkedList.Display();
+
+        // 8. Remove by value
+        cDLinkedList.Remove(2);
+        // Expected: 1 -> 55 -> 99 -> 3
+        cDLinkedList.Display();
+
+        // 9. RemoveFirst
+        cDLinkedList.RemoveFirst(); // Removes 1
+        cDLinkedList.Display(); // Expected: 55 -> 99 -> 3
+
+        // 10. RemoveLast
+        cDLinkedList.RemoveLast(); // Removes 3
+        cDLinkedList.Display(); // Expected: 55 -> 99
+
+        // 11. Remove by Node
+        var node99 = cDLinkedList.Find(99)!;
+        cDLinkedList.Remove(node99);
+        cDLinkedList.Display(); // Expected: 55
+
+        // 12. Enumerator / foreach test
+        Console.WriteLine("Foreach loop:");
+        foreach (var node in cDLinkedList)
+            Console.Write(node?.Value + " "); // Output: 55
+
+        // 13. CopyTo
+        var array = new int[10];
+        cDLinkedList.CopyTo(array, 3);
+        Console.WriteLine("\nCopied to array[3]: " + string.Join(", ", array)); 
+        // Expected: 0,0,0,55,0,0,0,0,0,0
+
+        // 14. Clear test
+        cDLinkedList.Clear();
+        Console.WriteLine("After clear:");
+        cDLinkedList.Display(); // Expected: []
+
+        // 15. Edge case: AddAfter on single element
+        cDLinkedList.AddFirst(100);
+        cDLinkedList.AddAfter(cDLinkedList.Find(100)!, 200);
+        cDLinkedList.Display(); // Expected: 100 -> 200
+
+        // 16. AddBefore on first element
+        cDLinkedList.AddBefore(cDLinkedList.Find(100)!, 50);
+        cDLinkedList.Display(); // Expected: 50 -> 100 -> 200
+
+        // 17. Insert at head
+        cDLinkedList.Insert(10, 0);
+        cDLinkedList.Display(); // 10 -> 50 -> 100 -> 200
+
+        // 18. Insert at end
+        cDLinkedList.Insert(999, cDLinkedList.Length);
+        cDLinkedList.Display(); // Ends with 999
+
+        // 19. Invalid CopyTo
+        try
+        {
+            cDLinkedList.CopyTo(new int[1], 0);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Expected CopyTo exception: " + ex.Message); // should throw
+        }
+
+        // 20. Invalid index
+        try
+        {
+            cDLinkedList.Insert(5, -1);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Expected invalid index: " + ex.Message);
+        }
+
+        // 21. Remove on empty list
+        cDLinkedList.Clear();
+        try
+        {
+            cDLinkedList.RemoveFirst();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Expected error on RemoveFirst: " + ex.Message);
+        }
+
         
     }
 }
