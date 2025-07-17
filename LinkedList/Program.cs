@@ -5,8 +5,7 @@ public class Startup
     static void Main()
     {
         LinkedList<int> sysLinkedList = new LinkedList<int>();
-        
-        
+         
         // ----------------- Singly Linked List -----------------
         Console.WriteLine("----------------- Singly Linked List -----------------");
         SinglyLinkedList<int> mySinglyLinkedList = new SinglyLinkedList<int>();
@@ -219,7 +218,6 @@ public class Startup
             Console.WriteLine("Expected error on RemoveFirst: " + ex.Message);
         }
 
-        
     }
 }
 
