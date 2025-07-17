@@ -65,8 +65,6 @@ public class DoublyLinkedList<T> // Not circular
     {
         if(index == 0){ AddFirst(newValue); return; }
         if(index == _size){ AddLast(newValue); return; }
-        if (index < 0 || index > _size) throw new ArgumentOutOfRangeException(nameof(index));
-        
         
         // Insert into middle
         var newNode = new Node<T>(newValue);
@@ -84,6 +82,8 @@ public class DoublyLinkedList<T> // Not circular
 
     private Node<T>? FindByIndex(int index)
     {
+        if (index < 0 || index > _size) throw new ArgumentOutOfRangeException(nameof(index));
+        
         int i = 0;
         var copyHead = Head;
         while (i < index && copyHead != null)

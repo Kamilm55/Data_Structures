@@ -13,7 +13,7 @@ public class Startup
 
         // Initial inserts
         mySinglyLinkedList.AddFirst(1);   // List: 1
-        mySinglyLinkedList.AddFirst(2);   // List: 2 → 1
+        mySinglyLinkedList.AddFirst(2);   // List: 2 → 1 
         mySinglyLinkedList.AddFirst(3);   // List: 3 → 2 → 1
         mySinglyLinkedList.AddLast(5);    // List: 3 → 2 → 1 → 5
         mySinglyLinkedList.AddLast(6);    // List: 3 → 2 → 1 → 5 → 6
@@ -98,6 +98,21 @@ public class Startup
             ? $"Found Node: {notFound.Value}" 
             : "Value not found");
         Console.WriteLine();
+        
+        // ----------------- Circular Doubly Linked List -----------------
+        Console.WriteLine("----------------- Circular Doubly Linked List -----------------");
+        CircularDoublyLinkedList<int> circularDoubly = new CircularDoublyLinkedList<int>();
+        circularDoubly.AddFirst(1);
+        circularDoubly.AddAfter(circularDoubly.Find(1)!,2);
+        circularDoubly.AddLast(23);
+        circularDoubly.AddBefore(circularDoubly.Find(23)!,232);
+        
+        circularDoubly.Display();
+        
+        circularDoubly.Clear();
+        Console.WriteLine("\nDisplay after clear:");
+        circularDoubly.Display();
+        
     }
 }
 
